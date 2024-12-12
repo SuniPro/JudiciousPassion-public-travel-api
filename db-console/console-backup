@@ -1,0 +1,48 @@
+-- 1. Create Schema
+CREATE SCHEMA IF NOT EXISTS travel;
+
+-- 2. Create Saunter Table
+CREATE TABLE travel.saunter (
+                                id SERIAL PRIMARY KEY,
+                                name VARCHAR(255),
+                                title VARCHAR(255),
+                                travel_mode VARCHAR(50),
+                                description TEXT,
+                                contents TEXT,
+                                insert_date TIMESTAMP,
+                                insert_id VARCHAR(255),
+                                update_date TIMESTAMP,
+                                update_id VARCHAR(255),
+                                delete_date TIMESTAMP,
+                                delete_id VARCHAR(255)
+);
+
+-- 3. Create Taste Table
+CREATE TABLE travel.taste (
+                              id SERIAL PRIMARY KEY,
+                              name VARCHAR(255),
+                              title VARCHAR(255),
+                              description TEXT,
+                              contents TEXT,
+                              latitude DOUBLE PRECISION,
+                              longitude DOUBLE PRECISION,
+                              insert_date TIMESTAMP,
+                              insert_id VARCHAR(255),
+                              update_date TIMESTAMP,
+                              update_id VARCHAR(255),
+                              delete_date TIMESTAMP,
+                              delete_id VARCHAR(255)
+);
+
+-- 4. Create SaunterWaypoint Table
+CREATE TABLE travel.saunter_waypoint (
+                                         id SERIAL PRIMARY KEY,
+                                         saunter_id INTEGER NOT NULL,
+                                         latitude DOUBLE PRECISION,
+                                         longitude DOUBLE PRECISION,
+                                         order_index INTEGER NOT NULL,
+                                         type VARCHAR(50),
+
+    -- Foreign Key Constraint
+                                         CONSTRAINT fk_saunter FOREIGN KEY (saunter_id) REFERENCES travel.saunter(id) ON DELETE CASCADE
+);
