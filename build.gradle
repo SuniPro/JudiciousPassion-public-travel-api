@@ -30,6 +30,17 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.postgresql:r2dbc-postgresql:1.0.7.RELEASE'
     implementation 'jakarta.servlet:jakarta.servlet-api:6.0.0'
+    implementation 'org.modelmapper:modelmapper:3.2.2'
+
+    implementation platform("software.amazon.awssdk:bom:2.10.1") // AWS SDK BOM 적용
+    implementation "software.amazon.awssdk:s3"                   // S3 의존성
+    implementation "software.amazon.awssdk:netty-nio-client"
+
+
+    // https://mvnrepository.com/artifact/org.springframework.cloud/spring-cloud-starter-aws
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+
+
     testImplementation 'org.testcontainers:postgresql'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
