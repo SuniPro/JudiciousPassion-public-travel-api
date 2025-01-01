@@ -1,4 +1,4 @@
-package com.suni.judiciouspassion.entity.taste;
+package com.suni.judiciouspassion.entity;
 
 public enum TravelMode {
     DRIVING, BICYCLING, TRANSIT, WALKING
