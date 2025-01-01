@@ -9,6 +9,7 @@ import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Builder(toBuilder = true)
 @Getter
@@ -34,10 +35,13 @@ public class Taste {
     private String contents;
 
     @Column("latitude")
-    private Double latitude;
+    private double latitude;
 
     @Column("longitude")
-    private Double longitude;
+    private double longitude;
+
+    @Column("image_list")
+    private List<String> imageList; // 추가된 필드
 
     @CreatedDate
     @Column("insert_date") // 삽입 시간
