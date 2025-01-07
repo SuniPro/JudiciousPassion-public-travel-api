@@ -9,13 +9,17 @@ import java.util.List;
 
 public interface TasteService {
 
-    Mono<Taste> createTaste(TasteDTO tasteDto, String userId);
+    Mono<Taste> createTaste(TasteDTO tasteDto);
 
-    Flux<Taste> getAllTastes();
+    Mono<List<TasteDTO>> getAllTastes(int page, int size);
 
     Flux<Taste> getTasteById(String insertId);
 
     Mono<Taste> updateTaste(Integer id, TasteDTO tasteDto, String userId);
 
     Mono<Void> deleteTaste(Integer id);
+
+    Mono<Long> addLike(Integer tasteId);
+
+    Mono<Long> minusLike(Integer tasteId);
 }

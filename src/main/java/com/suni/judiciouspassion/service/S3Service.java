@@ -5,5 +5,5 @@ import reactor.core.publisher.Mono;
 
 public interface S3Service {
 
-    Mono<String> uploadObject(FilePart filePart);
+    Mono<String> uploadObject(Integer boardId, FilePart filePart, String type);
 }

@@ -4,12 +4,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.extern.apachecommons.CommonsLog;
 import org.springframework.data.annotation.*;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
-
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Builder(toBuilder = true)
 @Getter
@@ -22,7 +21,7 @@ public class Taste {
     @Column("id")
     private Integer id;
 
-    @Column("name")
+    @Column("place_name")
     private String placeName;
 
     @Column("title")
@@ -40,8 +39,11 @@ public class Taste {
     @Column("longitude")
     private double longitude;
 
-    @Column("image_list")
-    private List<String> imageList; // 추가된 필드
+    @Column("rate")
+    private Long rate;
+
+    @Column("personal_color")
+    private String personalColor;
 
     @CreatedDate
     @Column("insert_date") // 삽입 시간

@@ -1,12 +1,15 @@
 package com.suni.judiciouspassion.dto;
 
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
+@Builder
 public class TasteDTO {
 
     private Integer id;
@@ -14,8 +17,6 @@ public class TasteDTO {
     private String placeName;
 
     private String title;
-
-    private String description;
 
     private String contents;
 
@@ -30,5 +31,11 @@ public class TasteDTO {
     private LocalDateTime updateDate;
 
     private String updateId;
+
+    private Long rate;
+
+    private String personalColor;
+
+    private List<String> imageUrls;
 }
 
