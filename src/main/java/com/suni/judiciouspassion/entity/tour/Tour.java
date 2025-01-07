@@ -21,14 +21,11 @@ public class Tour {
     @Column("id")
     private Integer id;
 
-    @Column("name")
+    @Column("place_name")
     private String placeName;
 
     @Column("title")
     private String title;
-
-    @Column("description")
-    private String description;
 
     @Column("contents")
     private String contents;
@@ -38,6 +35,12 @@ public class Tour {
 
     @Column("longitude")
     private Double longitude;
+
+    @Column("rate")
+    private Long rate;
+
+    @Column("personal_color")
+    private String personalColor;
 
     @CreatedDate
     @Column("insert_date") // 삽입 시간
