@@ -8,5 +8,5 @@ import reactor.core.publisher.Flux;
 @Repository
 public interface TasteRepository extends ReactiveCrudRepository<Taste, Integer> {
 
-    public Flux<Taste> findAllByInsertId(String InsertId);
+    public Flux<Taste> findAllByInsertId(String insertId);
 }
