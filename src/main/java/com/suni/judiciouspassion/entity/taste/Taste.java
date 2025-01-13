@@ -26,9 +26,6 @@ public class Taste {
     @Column("title")
     private String title;
 
-    @Column("description")
-    private String description;
-
     @Column("contents")
     private String contents;
 
