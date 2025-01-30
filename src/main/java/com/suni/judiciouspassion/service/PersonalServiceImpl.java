@@ -5,10 +5,8 @@ import com.suni.judiciouspassion.dto.TourDTO;
 import com.suni.judiciouspassion.entity.saunter.Saunter;
 import com.suni.judiciouspassion.entity.taste.TasteImages;
 import com.suni.judiciouspassion.entity.tour.TourImages;
-import com.suni.judiciouspassion.repository.TasteImagesRepository;
-import com.suni.judiciouspassion.repository.TasteRepository;
-import com.suni.judiciouspassion.repository.TourImagesRepository;
-import com.suni.judiciouspassion.repository.TourRepository;
+import com.suni.judiciouspassion.repository.*;
+import com.suni.judiciouspassion.tools.Parse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
@@ -21,6 +19,8 @@ public class PersonalServiceImpl implements PersonalService {
 
     private final TourRepository tourRepository;
     private final TourImagesRepository tourImagesRepository;
+
+    Parse<Object> parseTool = new Parse<>();
 
     @Autowired
     public PersonalServiceImpl(TasteRepository tasteRepository, TasteImagesRepository tasteImagesRepository, TourRepository tourRepository, TourImagesRepository tourImagesRepository) {
@@ -35,7 +35,7 @@ public class PersonalServiceImpl implements PersonalService {
 
         return tasteRepository.findAllByInsertId(insertId)
                 .flatMap(taste ->
-                        tasteImagesRepository.findAllByTasteId(taste.getId()) // 이미지 조회
+                        tasteImagesRepository.findAllByTasteId(parseTool.parseLong(taste.getId())) // 이미지 조회
                                 .map(TasteImages::getImageUrl) // 이미지 URL 추출
                                 .collectList() // List<String>으로 변환
                                 .map(imageUrls -> TasteDTO.builder()

@@ -1,4 +1,4 @@
-package com.suni.judiciouspassion.entity.tour;
+package com.suni.judiciouspassion.entity.saunter;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,16 +12,18 @@ import org.springframework.data.relational.core.mapping.Table;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table("tour_images")
-public class TourImages {
+@Table("saunter_medias")
+public class SaunterMedias {
 
     @Id
     @Column("id")
     private Long id;
 
-    @Column("tour_id")
-    private Long tourId;
+    @Column("saunter_id")
+    private Long saunterId;
 
-    @Column("image_url") // 컬럼 이름 수정
-    private String imageUrl; // 필드 이름 수정
+    @Column("media_url")
+    private String mediaUrl;
 }
+
+

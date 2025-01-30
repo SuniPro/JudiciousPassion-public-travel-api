@@ -5,6 +5,7 @@ import com.suni.judiciouspassion.entity.taste.Taste;
 import com.suni.judiciouspassion.service.S3Service;
 import com.suni.judiciouspassion.service.TasteService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.codec.multipart.FilePart;
@@ -23,6 +24,7 @@ public class TasteController {
     private final TasteService tasteService;
     private final S3Service s3Service;
 
+    @Autowired
     public TasteController(TasteService tasteService, S3Service s3Service) {
         this.tasteService = tasteService;
         this.s3Service = s3Service;
@@ -39,8 +41,8 @@ public class TasteController {
     }
 
     @GetMapping("/list/{page}/{size}")
-    public Mono<List<TasteDTO>> getTasteList(@PathVariable String page, @PathVariable String size) {
-        return tasteService.getAllTastes(Integer.parseInt(page), Integer.parseInt(size)); // Flux 반환
+    public Mono<List<TasteDTO>> getTasteList(@PathVariable int page, @PathVariable int size) {
+        return tasteService.getAllTastes(page, size); // Flux 반환
     }
 
     @PostMapping("/like/add")
@@ -73,7 +75,7 @@ public class TasteController {
                     }
 
                     // S3 업로드
-                    return s3Service.uploadObject(Integer.parseInt(id), filePart, type)
+                    return s3Service.uploadObject(Long.parseLong(id), filePart, type)
                             .onErrorMap(e -> {
                                 log.error("S3 upload failed for file: {}", filePart.filename(), e);
                                 return new RuntimeException("S3 upload failed: " + e.getMessage());

@@ -4,8 +4,10 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.suni.judiciouspassion.entity.saunter.SaunterMedias;
 import com.suni.judiciouspassion.entity.taste.TasteImages;
 import com.suni.judiciouspassion.entity.tour.TourImages;
+import com.suni.judiciouspassion.repository.SaunterMediasRepository;
 import com.suni.judiciouspassion.repository.TasteImagesRepository;
 import com.suni.judiciouspassion.repository.TourImagesRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -27,23 +29,25 @@ import java.util.UUID;
 @PropertySource("classpath:application-private.properties")
 public class S3ServiceImpl implements S3Service {
 
-    private final TourImagesRepository tourImagesRepository;
     @Value("${cloud.aws.s3.bucketName}")
     private String bucketName;
 
     private final AmazonS3 amazonS3;
     private final TasteImagesRepository tasteImagesRepository;
+    private final TourImagesRepository tourImagesRepository;
+    private final SaunterMediasRepository saunterMediasRepository;
 
     @Autowired
-    public S3ServiceImpl(AmazonS3 amazonS3, TasteImagesRepository tasteImagesRepository, TourImagesRepository tourImagesRepository) {
+    public S3ServiceImpl(AmazonS3 amazonS3, TasteImagesRepository tasteImagesRepository, TourImagesRepository tourImagesRepository, SaunterMediasRepository saunterMediasRepository) {
         this.amazonS3 = amazonS3;
         this.tasteImagesRepository = tasteImagesRepository;
         this.tourImagesRepository = tourImagesRepository;
+        this.saunterMediasRepository = saunterMediasRepository;
     }
 
     @Override
-    public Mono<String> uploadObject(Integer id, FilePart filePart, String type) {
-        String key = UUID.randomUUID().toString() + "-" + filePart.filename();
+    public Mono<String> uploadObject(Long id, FilePart filePart, String type) {
+        String key = UUID.randomUUID() + "-" + filePart.filename();
         String bucket = bucketName;
 
         // 1. Create multipart upload request
@@ -78,29 +82,40 @@ public class S3ServiceImpl implements S3Service {
         });
     }
 
-    private Mono<String> TableUploader(String type, String filename, Integer id) {
-        String imageUrl = amazonS3.getUrl(bucketName, filename).toString();
+    private Mono<String> TableUploader(String type, String filename, Long id) {
+        String mediaUrl = amazonS3.getUrl(bucketName, filename).toString();
 
         return switch (type) {
             case "taste" -> {
                 TasteImages tasteImages = TasteImages.builder()
                         .tasteId(id)
-                        .imageUrl(imageUrl)
+                        .imageUrl(mediaUrl)
                         .build();
 
                 // 체인 반환
                 yield tasteImagesRepository.save(tasteImages)
-                        .thenReturn(imageUrl);
+                        .thenReturn(mediaUrl);
             }
+            case "saunter" -> {
+                SaunterMedias saunterMedias = SaunterMedias.builder()
+                        .saunterId(id)
+                        .mediaUrl(mediaUrl)
+                        .build();
+
+                // 체인 반환
+                yield saunterMediasRepository.save(saunterMedias)
+                        .thenReturn(mediaUrl);
+            }
+
             case "tour" -> {
                 TourImages tourImages = TourImages.builder()
                         .tourId(id)
-                        .imageUrl(imageUrl)
+                        .imageUrl(mediaUrl)
                         .build();
 
                 // 체인 반환
                 yield tourImagesRepository.save(tourImages)
-                        .thenReturn(imageUrl);
+                        .thenReturn(mediaUrl);
             }
             default -> Mono.error(new IllegalArgumentException("Invalid type: " + type));
         };

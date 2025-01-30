@@ -1,18 +1,25 @@
 package com.suni.judiciouspassion.entity.saunter;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.*;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
+@Builder(toBuilder = true)
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 @Table("saunter")
 public class Saunter {
 
     @Id
     @Column("id")
-    private Integer id;
+    private Long id;
 
     @Column("name")
     private String placeName;
@@ -23,11 +30,17 @@ public class Saunter {
     @Column("travel_mode")
     private String travelMode;
 
-    @Column("description")
-    private String description;
-
     @Column("contents")
     private String contents;
+
+    @Column("personal_color")
+    private String personalColor;
+
+    @Column("rate")
+    private Long rate;
+
+    @Column("youtube_link")
+    private String youtubeLink;
 
     @CreatedDate
     @Column("insert_date") // 삽입 시간
@@ -44,12 +57,4 @@ public class Saunter {
     @LastModifiedBy
     @Column("update_id") // 수정 사용자 ID
     private String updateId;
-
-    @Column("delete_date") // 삭제 시간
-    private LocalDateTime deleteDate;
-
-    @Column("delete_id") // 삭제 사용자 ID
-    private String deleteId;
-
-    private List<SaunterWaypoint> waypoints;
 }

@@ -46,3 +46,24 @@ CREATE TABLE travel.saunter_waypoint (
     -- Foreign Key Constraint
                                          CONSTRAINT fk_saunter FOREIGN KEY (saunter_id) REFERENCES travel.saunter(id) ON DELETE CASCADE
 );
+
+
+CREATE TABLE taste_images (
+    id SERIAL PRIMARY KEY, -- 고유 ID
+    taste_id INTEGER NOT NULL, -- Taste 테이블의 외래 키
+    image_url VARCHAR(255) NOT NULL, -- 이미지 URL
+
+    CONSTRAINT fk_taste FOREIGN KEY (taste_id)
+        REFERENCES taste (id)
+        ON DELETE CASCADE -- 연관된 Taste 삭제 시 자동 삭제
+);
+
+CREATE TABLE travel.saunter_medias (
+                              id SERIAL PRIMARY KEY, -- 고유 ID
+                              saunter_id BIGINT NOT NULL, -- Taste 테이블의 외래 키
+                              media_url VARCHAR(255) NOT NULL, -- 이미지 URL
+
+                              CONSTRAINT fk_saunter FOREIGN KEY (saunter_id)
+                                  REFERENCES travel.saunter (id)
+                                  ON DELETE CASCADE -- 연관된 Taste 삭제 시 자동 삭제
+);
