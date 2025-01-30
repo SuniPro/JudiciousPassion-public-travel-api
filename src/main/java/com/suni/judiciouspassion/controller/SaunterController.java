@@ -1,9 +1,9 @@
 package com.suni.judiciouspassion.controller;
 
-import com.suni.judiciouspassion.dto.TourDTO;
-import com.suni.judiciouspassion.entity.tour.Tour;
-import com.suni.judiciouspassion.service.S3ServiceImpl;
-import com.suni.judiciouspassion.service.TourService;
+import com.suni.judiciouspassion.dto.SaunterDTO;
+import com.suni.judiciouspassion.entity.saunter.Saunter;
+import com.suni.judiciouspassion.service.S3Service;
+import com.suni.judiciouspassion.service.SaunterService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -18,46 +18,46 @@ import java.util.Objects;
 
 @Slf4j
 @RestController
-@RequestMapping("tour")
-public class TourController {
+@RequestMapping("saunter")
+public class SaunterController {
 
-    private final TourService tourService;
-    private final S3ServiceImpl s3Service;
+    private final SaunterService saunterService;
+    private final S3Service s3Service;
 
     @Autowired
-    public TourController(TourService tourService, S3ServiceImpl s3Service) {
-        this.tourService = tourService;
+    public SaunterController(SaunterService saunterService, S3Service s3Service) {
+        this.saunterService = saunterService;
         this.s3Service = s3Service;
     }
 
     @PostMapping("/create")
-    public Mono<Tour> tourCreate(@RequestBody TourDTO tourDTO) {
-        return tourService.createTour(tourDTO);
+    public Mono<Saunter> createSaunter(@RequestBody SaunterDTO saunterDTO) {
+        return saunterService.createSaunter(saunterDTO);
     }
 
     @GetMapping("/get/{insertId}")
-    public Flux<Tour> getTourById(@PathVariable String insertId) {
-        return tourService.getTourById(insertId);
+    public Flux<Saunter> getSaunterById(@PathVariable String insertId) {
+        return saunterService.getSaunterById(insertId);
     }
 
     @GetMapping("/list/{page}/{size}")
-    public Mono<List<TourDTO>> getTourList(@PathVariable String page, @PathVariable String size) {
-        return tourService.getAllTours(Integer.parseInt(page), Integer.parseInt(size)); // Flux 반환
+    public Mono<List<SaunterDTO>> getSaunterList(@PathVariable int page, @PathVariable int size) {
+        return saunterService.getAllSaunters(page, size);
     }
 
     @PostMapping("/like/add")
-    public Mono<Long> addLike(@RequestBody Integer tourId) {
-        return tourService.addLike(tourId); // Flux 반환
+    public Mono<Long> addLike(@RequestBody Long saunterId) {
+        return saunterService.addLike(saunterId); // Flux 반환
     }
 
     @PostMapping("/like/minus")
-    public Mono<Long> minusLike(@RequestBody Integer tourId) {
-        return tourService.minusLike(tourId); // Flux 반환
+    public Mono<Long> minusLike(@RequestBody Long saunterId) {
+        return saunterService.minusLike(saunterId); // Flux 반환
     }
 
     @PostMapping(value = "/image/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public Mono<ResponseEntity<String>> uploadFile(@RequestPart("id") String id, @RequestPart("file") Mono<FilePart> filePartMono
-            ,@RequestPart("type") String type) {
+            , @RequestPart("type") String type) {
         return filePartMono
                 .flatMap(filePart -> {
                     String filename = filePart.filename();

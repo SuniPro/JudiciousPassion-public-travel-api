@@ -6,5 +6,5 @@ import reactor.core.publisher.Flux;
 
 public interface TasteImagesRepository extends ReactiveCrudRepository<TasteImages, Integer> {
 
-    public Flux<TasteImages> findAllByTasteId(Integer tasteId);
+    public Flux<TasteImages> findAllByTasteId(Long tasteId);
 }

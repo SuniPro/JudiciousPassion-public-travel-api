@@ -1,9 +1,17 @@
 package com.suni.judiciouspassion.entity.saunter;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Column;
 import org.springframework.data.relational.core.mapping.Table;
 
+@Builder(toBuilder = true)
+@Getter
+@AllArgsConstructor
+@NoArgsConstructor
 @Table("saunter_waypoint")
 public class SaunterWaypoint {
 
@@ -26,3 +34,4 @@ public class SaunterWaypoint {
     @Column("type") // 출발지, 경유지, 목적지 구분
     private WaypointType type; // START, STOP, END
 }
+

@@ -17,10 +17,10 @@ public class TasteImages {
 
     @Id
     @Column("id")
-    private Integer id;
+    private Long id;
 
     @Column("taste_id")
-    private Integer tasteId;
+    private Long tasteId;
 
     @Column("image_url") // 컬럼 이름 수정
     private String imageUrl; // 필드 이름 수정
