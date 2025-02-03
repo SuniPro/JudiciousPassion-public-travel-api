@@ -15,7 +15,8 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Slf4j
@@ -25,6 +26,9 @@ public class TourServiceImpl implements TourService {
     private final TourRepository tourRepository;
 
     private final R2dbcEntityTemplate r2dbcEntityTemplate;
+
+    private final ZoneId seoul = ZoneId.of("Asia/Seoul");
+
 
     @Autowired
     public TourServiceImpl(TourRepository tourRepository, R2dbcEntityTemplate r2dbcEntityTemplate) {
@@ -40,7 +44,7 @@ public class TourServiceImpl implements TourService {
                 .placeName(tourDto.getPlaceName())
                 .latitude(tourDto.getLatitude())
                 .longitude(tourDto.getLongitude())
-                .insertDate(LocalDateTime.now())
+                .insertDate(ZonedDateTime.now().withZoneSameInstant(seoul).toLocalDateTime())
                 .rate(0L)
                 .personalColor(tourDto.getPersonalColor())
                 .insertId(tourDto.getInsertId())
@@ -103,7 +107,7 @@ public class TourServiceImpl implements TourService {
                             .contents(tourDto.getContents())
                             .latitude(tourDto.getLatitude())
                             .longitude(tourDto.getLongitude())
-                            .updateDate(LocalDateTime.now())
+                            .updateDate(ZonedDateTime.now().withZoneSameInstant(seoul).toLocalDateTime())
                             .updateId(userId)
                             .build();
                     return tourRepository.save(updatedTour);

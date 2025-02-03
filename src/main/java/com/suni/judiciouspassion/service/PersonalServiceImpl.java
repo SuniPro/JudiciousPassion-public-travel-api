@@ -1,7 +1,9 @@
 package com.suni.judiciouspassion.service;
 
+import com.suni.judiciouspassion.dto.LocationDTO;
 import com.suni.judiciouspassion.dto.TasteDTO;
 import com.suni.judiciouspassion.dto.TourDTO;
+import com.suni.judiciouspassion.entity.personal.SuniLocation;
 import com.suni.judiciouspassion.entity.saunter.Saunter;
 import com.suni.judiciouspassion.entity.taste.TasteImages;
 import com.suni.judiciouspassion.entity.tour.TourImages;
@@ -10,6 +12,7 @@ import com.suni.judiciouspassion.tools.Parse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
 @Service
 public class PersonalServiceImpl implements PersonalService {
@@ -20,14 +23,17 @@ public class PersonalServiceImpl implements PersonalService {
     private final TourRepository tourRepository;
     private final TourImagesRepository tourImagesRepository;
 
+    private final SuniLocationRepository locationRepository;
+
     Parse<Object> parseTool = new Parse<>();
 
     @Autowired
-    public PersonalServiceImpl(TasteRepository tasteRepository, TasteImagesRepository tasteImagesRepository, TourRepository tourRepository, TourImagesRepository tourImagesRepository) {
+    public PersonalServiceImpl(TasteRepository tasteRepository, TasteImagesRepository tasteImagesRepository, TourRepository tourRepository, TourImagesRepository tourImagesRepository, SuniLocationRepository locationRepository) {
         this.tasteRepository = tasteRepository;
         this.tasteImagesRepository = tasteImagesRepository;
         this.tourRepository = tourRepository;
         this.tourImagesRepository = tourImagesRepository;
+        this.locationRepository = locationRepository;
     }
 
     @Override
@@ -84,6 +90,18 @@ public class PersonalServiceImpl implements PersonalService {
 
     @Override
     public Flux<Saunter> getSaunterList(String insertId) {
+        return null;
+    }
+
+    @Override
+    public Mono<SuniLocation> createLocation(LocationDTO locationDTO) {
+
+        SuniLocation suniLocation = SuniLocation.builder().longitude(locationDTO.getLongitude()).latitude(locationDTO.getLatitude()).build();
+        return locationRepository.save(suniLocation);
+    }
+
+    @Override
+    public Mono<LocationDTO> getLocation() {
         return null;
     }
 }

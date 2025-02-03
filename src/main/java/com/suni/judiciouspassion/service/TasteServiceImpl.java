@@ -16,7 +16,8 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Slf4j
@@ -29,6 +30,8 @@ public class TasteServiceImpl implements TasteService{
 
     private final R2dbcEntityTemplate r2dbcEntityTemplate;
 
+    private final ZoneId seoul = ZoneId.of("Asia/Seoul");
+
     @Autowired
     public TasteServiceImpl(TasteRepository tasteRepository, BoundaryFilter boundaryFilter, R2dbcEntityTemplate r2dbcEntityTemplate) {
         this.tasteRepository = tasteRepository;
@@ -38,13 +41,14 @@ public class TasteServiceImpl implements TasteService{
 
     @Override
     public Mono<Taste> createTaste(TasteDTO tasteDto) {
+
         Taste taste = Taste.builder()
                 .title(tasteDto.getTitle())
                 .contents(tasteDto.getContents())
                 .placeName(tasteDto.getPlaceName())
                 .latitude(tasteDto.getLatitude())
                 .longitude(tasteDto.getLongitude())
-                .insertDate(LocalDateTime.now())
+                .insertDate(ZonedDateTime.now().withZoneSameInstant(seoul).toLocalDateTime())
                 .rate(0L)
                 .personalColor(tasteDto.getPersonalColor())
                 .insertId(tasteDto.getInsertId())
@@ -107,7 +111,7 @@ public class TasteServiceImpl implements TasteService{
                             .contents(tasteDto.getContents())
                             .latitude(tasteDto.getLatitude())
                             .longitude(tasteDto.getLongitude())
-                            .updateDate(LocalDateTime.now())
+                            .updateDate(ZonedDateTime.now().withZoneSameInstant(seoul).toLocalDateTime())
                             .updateId(userId)
                             .build();
                     return tasteRepository.save(updatedTaste);
