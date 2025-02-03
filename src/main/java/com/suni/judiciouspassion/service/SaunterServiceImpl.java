@@ -20,7 +20,8 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -40,6 +41,8 @@ public class SaunterServiceImpl implements SaunterService {
 
     Parse<Object> parse = new Parse<>();
 
+    private final ZoneId seoul = ZoneId.of("Asia/Seoul");
+
     @Autowired
     public SaunterServiceImpl(SaunterRepository saunterRepository, SaunterRepository saunterRepository1, WaypointRepository waypointRepository, BoundaryFilter boundaryFilter, R2dbcEntityTemplate r2dbcEntityTemplate) {
         this.saunterRepository = saunterRepository;
@@ -54,7 +57,7 @@ public class SaunterServiceImpl implements SaunterService {
                 .title(saunterDTO.getTitle())
                 .contents(saunterDTO.getContents())
                 .placeName(saunterDTO.getPlaceName())
-                .insertDate(LocalDateTime.now())
+                .insertDate(ZonedDateTime.now().withZoneSameInstant(seoul).toLocalDateTime())
                 .rate(0L)
                 .personalColor(saunterDTO.getPersonalColor())
                 .insertId(saunterDTO.getInsertId())
